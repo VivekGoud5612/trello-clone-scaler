@@ -2,6 +2,9 @@
 
 A full-stack Kanban-style project management application built with **FastAPI** + **React**, replicating Trello's core features and design patterns.
 
+# Developer Profile: AI/ML Specialization
+While this is a Full-Stack project, my core expertise lies in Artificial Intelligence and Machine Learning. I chose the FastAPI + Python ecosystem specifically because it allows for seamless integration of ML models into the backend—bridging the gap between complex research and production-ready user interfaces.
+
 ## 🏗️ Tech Stack
 
 | Layer | Technology |
@@ -79,13 +82,19 @@ Optimistic UI Updates: The frontend is designed to reflect changes (like moving 
 - Node.js 18+
 
 
-The "Intelligence Head" Edge1. The Midpoint Algorithm (Positioning)
+### The "Intelligence Head" Edge
+
+#### 1. The Midpoint Algorithm (Positioning)
 Instead of using simple integers for card ordering—which requires a massive "re-index" of every card when one is moved—I implemented Fractional Indexing:
 $$P_{new} = \frac{P_{prev} + P_{next}}{2}$$
 This ensures $O(1)$ performance.
 The database only needs to update one row when a card is moved.
-2. Transaction Pooling & PgBouncerDuring development, I encountered the "Prepared Statement" error common in serverless environments. I resolved this by:Connecting to the Transaction Pool (Port 6543) via PgBouncer.Disabling the statement cache (statement_cache_size=0) in asyncpg to ensure stable connections even when the pooler rotates sessions.
-3. Direct Connection vs. Supabase ClientI intentionally avoided the supabase-js client.The Reason: Client libraries often abstract away complex SQL features.The Solution: By using a direct postgresql:// connection, I was able to write complex Joins (fetching Boards, Lists, and Cards in one shot) and use Full-Text Search via tsvector, which provides a much faster and more flexible search experience.
+
+#### 2. Transaction Pooling & PgBouncerDuring development,
+I encountered the "Prepared Statement" error common in serverless environments. I resolved this by:Connecting to the Transaction Pool (Port 6543) via PgBouncer.Disabling the statement cache (statement_cache_size=0) in asyncpg to ensure stable connections even when the pooler rotates sessions.
+
+#### 3. Direct Connection vs. Supabase Client
+I intentionally avoided the supabase-js client.The Reason: Client libraries often abstract away complex SQL features.The Solution: By using a direct postgresql:// connection, I was able to write complex Joins (fetching Boards, Lists, and Cards in one shot) and use Full-Text Search via tsvector, which provides a much faster and more flexible search experience.
 
 
 ### 2. Start Backend
