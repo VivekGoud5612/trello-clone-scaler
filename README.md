@@ -58,18 +58,35 @@ trello-clone/
     │   └── __tests__/          # 19 Vitest tests
     └── package.json
 ```
+### Backend (Python 3.10+)
+FastAPI: Used for building high-speed REST endpoints with Pydantic for request validation.
 
-## 🚀 Quick Start
+uvicorn: The ASGI server running the app at localhost:8001.
+
+asyncpg: A high-performance, non-blocking PostgreSQL driver. I chose this over standard drivers because it handles concurrent requests significantly faster, which is critical for real-time board updates.
+
+psycopg2-binary: Used specifically for structural migrations and schema setup, as it handles complex DDL (Data Definition Language) commands reliably.
+
+### Frontend (React + JSX)
+Vite: Used for a fast development environment and optimized production builds.
+
+Axios: For handling the "handshake" between the UI and the FastAPI backend.
+
+Optimistic UI Updates: The frontend is designed to reflect changes (like moving a card) instantly, syncing with the database in the background for a lag-free experience.
 
 ### Prerequisites
-- Docker & Docker Compose
 - Python 3.11+ & [uv](https://docs.astral.sh/uv/)
 - Node.js 18+
 
-### 1. Start Database
-```bash
-docker compose up -d
-```
+
+The "Intelligence Head" Edge1. The Midpoint Algorithm (Positioning)
+Instead of using simple integers for card ordering—which requires a massive "re-index" of every card when one is moved—I implemented Fractional Indexing:
+$$P_{new} = \frac{P_{prev} + P_{next}}{2}$$
+This ensures $O(1)$ performance.
+The database only needs to update one row when a card is moved.
+2. Transaction Pooling & PgBouncerDuring development, I encountered the "Prepared Statement" error common in serverless environments. I resolved this by:Connecting to the Transaction Pool (Port 6543) via PgBouncer.Disabling the statement cache (statement_cache_size=0) in asyncpg to ensure stable connections even when the pooler rotates sessions.
+3. Direct Connection vs. Supabase ClientI intentionally avoided the supabase-js client.The Reason: Client libraries often abstract away complex SQL features.The Solution: By using a direct postgresql:// connection, I was able to write complex Joins (fetching Boards, Lists, and Cards in one shot) and use Full-Text Search via tsvector, which provides a much faster and more flexible search experience.
+
 
 ### 2. Start Backend
 ```bash
@@ -181,3 +198,4 @@ All foreign keys use `ON DELETE CASCADE` for data integrity.
 | PUT/DELETE | `/api/checklist-items/{id}` | Update/delete item |
 | GET/POST | `/api/cards/{id}/comments` | Comments |
 | GET | `/api/search` | Search cards |
+
