@@ -1,0 +1,1460 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Trello-like color palette */
+  --trello-blue: #0079BF;
+  --trello-blue-dark: #026AA7;
+  --trello-blue-hover: #0067A3;
+  --trello-bg: #0079BF;
+  --trello-nav: rgba(0, 0, 0, 0.24);
+  --trello-nav-hover: rgba(255, 255, 255, 0.3);
+  --trello-list-bg: #ebecf0;
+  --trello-list-bg-hover: rgba(255, 255, 255, 0.24);
+  --trello-card-bg: #fff;
+  --trello-card-shadow: 0 1px 0 rgba(9,30,66,.25);
+  --trello-card-hover: #f4f5f7;
+  --trello-text: #172b4d;
+  --trello-text-light: #5e6c84;
+  --trello-text-lighter: #97a0af;
+  --trello-border: #dfe1e6;
+  --trello-overlay: rgba(0, 0, 0, 0.64);
+  --trello-red: #EB5A46;
+  --trello-green: #61BD4F;
+  --trello-yellow: #F2D600;
+  --trello-orange: #FF9F1A;
+  --trello-purple: #C377E0;
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --transition: 0.15s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--trello-text);
+  background: #fafbfc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-family: var(--font-family);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+input, textarea {
+  font-family: var(--font-family);
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── HEADER / NAVBAR ───────────────────────────── */
+.header {
+  background: var(--trello-nav);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 4px;
+  backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 100;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.header-logo:hover {
+  background: var(--trello-nav-hover);
+}
+
+.header-logo svg {
+  width: 24px;
+  height: 24px;
+}
+
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-btn {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background var(--transition);
+}
+
+.header-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.header-search {
+  position: relative;
+}
+
+.header-search input {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 6px 12px 6px 32px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  width: 200px;
+  transition: all var(--transition);
+}
+
+.header-search input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+.header-search input:focus {
+  background: #fff;
+  color: var(--trello-text);
+  width: 280px;
+  border-color: var(--trello-blue);
+}
+
+.header-search input:focus::placeholder {
+  color: var(--trello-text-lighter);
+}
+
+.header-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+}
+
+.header-search input:focus ~ .header-search-icon {
+  color: var(--trello-text-lighter);
+}
+
+.header-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.header-avatar:hover {
+  opacity: 0.8;
+}
+
+/* ── HOME / BOARDS PAGE ────────────────────────── */
+.home-page {
+  min-height: calc(100vh - 44px);
+  background: #fafbfc;
+  padding: 40px;
+}
+
+.home-header {
+  max-width: 960px;
+  margin: 0 auto 24px;
+}
+
+.home-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--trello-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.boards-grid {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(194px, 1fr));
+  gap: 16px;
+}
+
+.board-tile {
+  height: 96px;
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: opacity var(--transition);
+}
+
+.board-tile:hover {
+  opacity: 0.9;
+}
+
+.board-tile-title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  word-break: break-word;
+}
+
+.board-tile-create {
+  background: rgba(9,30,66,.04);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--trello-text-light);
+  font-size: 14px;
+  font-weight: 400;
+  width: 100%;
+  text-align: center;
+  transition: background var(--transition);
+}
+
+.board-tile-create:hover {
+  background: rgba(9,30,66,.08);
+}
+
+.board-tile-delete {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.board-tile:hover .board-tile-delete {
+  opacity: 1;
+}
+
+.board-tile-delete:hover {
+  background: rgba(0,0,0,0.5);
+}
+
+/* ── CREATE BOARD MODAL ─────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--trello-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  animation: slideUp 0.2s ease;
+}
+
+.modal-content h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--trello-text);
+}
+
+.modal-content label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--trello-text-light);
+  margin-bottom: 4px;
+}
+
+.modal-content input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid var(--trello-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  transition: border-color var(--transition);
+}
+
+.modal-content input[type="text"]:focus {
+  border-color: var(--trello-blue);
+}
+
+.color-picker {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 16px;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 40px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all var(--transition);
+}
+
+.color-swatch:hover {
+  opacity: 0.8;
+}
+
+.color-swatch.selected {
+  border-color: var(--trello-text);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--trello-text);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.btn-primary {
+  background: var(--trello-blue);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background var(--transition);
+}
+
+.btn-primary:hover {
+  background: var(--trello-blue-dark);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--trello-text-light);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background var(--transition);
+}
+
+.btn-secondary:hover {
+  background: rgba(9,30,66,.08);
+}
+
+/* ── BOARD VIEW ────────────────────────────────── */
+.board-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.board-bar {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  background: rgba(0,0,0,0.16);
+  backdrop-filter: blur(4px);
+}
+
+.board-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.board-title:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.board-title-input {
+  color: var(--trello-text);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border: 2px solid var(--trello-blue);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.board-bar-right {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.board-filter-btn {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--transition);
+}
+
+.board-filter-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.board-filter-btn.active {
+  background: rgba(255,255,255,0.9);
+  color: var(--trello-text);
+}
+
+.board-canvas {
+  flex: 1;
+  display: flex;
+  padding: 12px 8px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: flex-start;
+}
+
+/* ── LISTS ──────────────────────────────────────── */
+.list-wrapper {
+  flex-shrink: 0;
+  width: 272px;
+  margin: 0 4px;
+}
+
+.list-container {
+  background: var(--trello-list-bg);
+  border-radius: var(--radius-lg);
+  max-height: calc(100vh - 148px);
+  display: flex;
+  flex-direction: column;
+}
+
+.list-header {
+  padding: 8px 8px 0;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+}
+
+.list-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  color: var(--trello-text);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  word-break: break-word;
+}
+
+.list-title:hover {
+  background: rgba(9,30,66,.08);
+}
+
+.list-title-input {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border: 2px solid var(--trello-blue);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--trello-text);
+}
+
+.list-menu-btn {
+  background: none;
+  color: var(--trello-text-light);
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  transition: background var(--transition);
+}
+
+.list-menu-btn:hover {
+  background: rgba(9,30,66,.08);
+}
+
+.list-cards {
+  padding: 0 4px;
+  overflow-y: auto;
+  min-height: 4px;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(9,30,66,.2) transparent;
+}
+
+.list-cards::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list-cards::-webkit-scrollbar-thumb {
+  background: rgba(9,30,66,.2);
+  border-radius: 4px;
+}
+
+.list-footer {
+  padding: 4px 8px 8px;
+}
+
+.add-card-btn {
+  background: none;
+  color: var(--trello-text-light);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.add-card-btn:hover {
+  background: rgba(9,30,66,.08);
+  color: var(--trello-text);
+}
+
+.add-card-form {
+  padding: 4px 0;
+}
+
+.add-card-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  resize: none;
+  min-height: 54px;
+  box-shadow: var(--trello-card-shadow);
+  color: var(--trello-text);
+}
+
+.add-card-form textarea:focus {
+  outline: none;
+}
+
+.add-card-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.add-card-actions .btn-primary {
+  padding: 6px 16px;
+}
+
+.add-card-close {
+  background: none;
+  color: var(--trello-text-light);
+  font-size: 20px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+}
+
+.add-card-close:hover {
+  color: var(--trello-text);
+}
+
+/* Add List */
+.add-list-wrapper {
+  flex-shrink: 0;
+  width: 272px;
+  margin: 0 4px;
+}
+
+.add-list-btn {
+  background: rgba(255,255,255,0.24);
+  color: rgba(255,255,255,0.9);
+  padding: 10px 12px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background var(--transition);
+}
+
+.add-list-btn:hover {
+  background: rgba(255,255,255,0.32);
+}
+
+.add-list-form {
+  background: var(--trello-list-bg);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+}
+
+.add-list-form input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid var(--trello-blue);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* ── CARDS ──────────────────────────────────────── */
+.card-item {
+  background: var(--trello-card-bg);
+  border-radius: var(--radius-lg);
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  box-shadow: var(--trello-card-shadow);
+  position: relative;
+  transition: background var(--transition);
+}
+
+.card-item:hover {
+  background: var(--trello-card-hover);
+}
+
+.card-item.dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.card-cover {
+  height: 32px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  margin: -6px -8px 6px;
+}
+
+.card-labels {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.card-label {
+  height: 8px;
+  min-width: 40px;
+  border-radius: 4px;
+  transition: height var(--transition);
+}
+
+.card-labels-expanded .card-label {
+  height: 16px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  line-height: 16px;
+}
+
+.card-title {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--trello-text);
+  word-break: break-word;
+}
+
+.card-badges {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.card-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--trello-text-light);
+}
+
+.card-badge.overdue {
+  background: var(--trello-red);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.card-badge.due-soon {
+  background: var(--trello-yellow);
+  color: var(--trello-text);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.card-badge.completed {
+  background: var(--trello-green);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.card-members {
+  margin-left: auto;
+  display: flex;
+  gap: -4px;
+}
+
+.card-member-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: -4px;
+  border: 2px solid #fff;
+}
+
+.card-edit-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--trello-card-hover);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition);
+  font-size: 14px;
+  color: var(--trello-text-light);
+}
+
+.card-item:hover .card-edit-btn {
+  opacity: 1;
+}
+
+/* ── CARD DETAIL MODAL ─────────────────────────── */
+.card-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--trello-overlay);
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: 48px 0;
+  animation: fadeIn 0.15s ease;
+}
+
+.card-detail-modal {
+  background: #f4f5f7;
+  border-radius: var(--radius-lg);
+  width: 768px;
+  max-width: 90vw;
+  min-height: 600px;
+  position: relative;
+  margin: auto 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: slideUp 0.2s ease;
+}
+
+.card-detail-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.08);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--trello-text-light);
+  transition: background var(--transition);
+  z-index: 10;
+}
+
+.card-detail-close:hover {
+  background: rgba(0,0,0,0.16);
+}
+
+.card-detail-cover {
+  height: 116px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.card-detail-header {
+  padding: 12px 16px 8px 52px;
+  position: relative;
+}
+
+.card-detail-header-icon {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  font-size: 20px;
+  color: var(--trello-text-light);
+}
+
+.card-detail-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--trello-text);
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 4px 0;
+  resize: none;
+  line-height: 1.4;
+}
+
+.card-detail-title:focus {
+  background: #fff;
+  box-shadow: inset 0 0 0 2px var(--trello-blue);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+}
+
+.card-detail-subtitle {
+  font-size: 12px;
+  color: var(--trello-text-light);
+  margin-top: 4px;
+}
+
+.card-detail-body {
+  display: flex;
+  padding: 0 16px 16px;
+  gap: 16px;
+}
+
+.card-detail-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-detail-sidebar {
+  width: 168px;
+  flex-shrink: 0;
+}
+
+/* Detail sections */
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-left: 36px;
+  position: relative;
+}
+
+.detail-section-icon {
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+  color: var(--trello-text-light);
+}
+
+.detail-section-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--trello-text);
+  flex: 1;
+}
+
+.detail-section-content {
+  padding-left: 36px;
+}
+
+/* Description */
+.description-editor {
+  background: rgba(9,30,66,.04);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  min-height: 56px;
+  font-size: 14px;
+  color: var(--trello-text);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.description-editor:hover {
+  background: rgba(9,30,66,.08);
+}
+
+.description-editor.empty {
+  color: var(--trello-text-light);
+}
+
+.description-textarea {
+  width: 100%;
+  border: none;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 14px;
+  min-height: 120px;
+  resize: vertical;
+  color: var(--trello-text);
+  box-shadow: 0 0 0 2px var(--trello-blue);
+}
+
+/* Labels section in detail */
+.detail-labels {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding-left: 36px;
+  margin-bottom: 16px;
+}
+
+.detail-label-chip {
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.detail-label-chip:hover {
+  opacity: 0.8;
+}
+
+/* Members section in detail */
+.detail-members {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding-left: 36px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.detail-member-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.detail-member-avatar:hover {
+  opacity: 0.8;
+}
+
+/* Due date */
+.due-date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Checklist */
+.checklist-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.checklist-progress-text {
+  font-size: 11px;
+  color: var(--trello-text-light);
+  min-width: 30px;
+}
+
+.checklist-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(9,30,66,.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.checklist-progress-fill {
+  height: 100%;
+  background: var(--trello-blue);
+  border-radius: 4px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.checklist-progress-fill.complete {
+  background: var(--trello-green);
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  border-radius: var(--radius-sm);
+}
+
+.checklist-item input[type="checkbox"] {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--trello-blue);
+  cursor: pointer;
+}
+
+.checklist-item-text {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--trello-text);
+}
+
+.checklist-item-text.completed {
+  text-decoration: line-through;
+  color: var(--trello-text-light);
+}
+
+.checklist-item-delete {
+  background: none;
+  color: var(--trello-text-lighter);
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.checklist-item:hover .checklist-item-delete {
+  opacity: 1;
+}
+
+.checklist-add-item {
+  margin-top: 8px;
+}
+
+.checklist-add-item input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid var(--trello-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.checklist-add-item input:focus {
+  border-color: var(--trello-blue);
+}
+
+/* Comments */
+.comment-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--trello-border);
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  background: #fff;
+  min-height: 36px;
+  resize: none;
+  transition: box-shadow var(--transition);
+}
+
+.comment-input:focus {
+  box-shadow: 0 0 0 2px var(--trello-blue);
+  border-color: var(--trello-blue);
+}
+
+.comment-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-author {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--trello-text);
+}
+
+.comment-time {
+  font-size: 12px;
+  color: var(--trello-text-lighter);
+  margin-left: 8px;
+}
+
+.comment-text {
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  margin-top: 4px;
+  color: var(--trello-text);
+  box-shadow: 0 1px 1px rgba(9,30,66,.1);
+}
+
+.comment-actions {
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+}
+
+.comment-actions button {
+  background: none;
+  color: var(--trello-text-lighter);
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.comment-actions button:hover {
+  color: var(--trello-text-light);
+}
+
+/* Sidebar buttons */
+.sidebar-section {
+  margin-bottom: 16px;
+}
+
+.sidebar-section h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--trello-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 12px;
+  background: rgba(9,30,66,.04);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--trello-text);
+  margin-bottom: 4px;
+  transition: background var(--transition);
+}
+
+.sidebar-btn:hover {
+  background: rgba(9,30,66,.08);
+}
+
+.sidebar-btn.danger {
+  color: var(--trello-red);
+}
+
+.sidebar-btn.danger:hover {
+  background: rgba(235,90,70,.12);
+}
+
+/* ── POPOVER / DROPDOWN ────────────────────────── */
+.popover {
+  position: absolute;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 16px -4px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
+  z-index: 500;
+  width: 304px;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: fadeIn 0.1s ease;
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--trello-border);
+}
+
+.popover-header h4 {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--trello-text);
+}
+
+.popover-close {
+  background: none;
+  color: var(--trello-text-light);
+  font-size: 18px;
+  padding: 2px;
+}
+
+.popover-body {
+  padding: 12px;
+}
+
+.popover-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.popover-item:hover {
+  background: rgba(9,30,66,.04);
+}
+
+/* ── SEARCH RESULTS ────────────────────────────── */
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 200;
+}
+
+.search-result-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--trello-border);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.search-result-item:hover {
+  background: var(--trello-card-hover);
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--trello-text);
+}
+
+.search-result-meta {
+  font-size: 12px;
+  color: var(--trello-text-light);
+  margin-top: 2px;
+}
+
+/* ── FILTER BAR ────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0,0,0,0.08);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-bar select {
+  padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 13px;
+  font-family: var(--font-family);
+}
+
+.filter-bar select option {
+  color: var(--trello-text);
+  background: #fff;
+}
+
+.filter-clear {
+  color: #fff;
+  font-size: 12px;
+  text-decoration: underline;
+  background: none;
+}
+
+/* ── ANIMATIONS ────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── LOADING ───────────────────────────────────── */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--trello-text-light);
+  font-size: 16px;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(9,30,66,.1);
+  border-top-color: var(--trello-blue);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── RESPONSIVE ────────────────────────────────── */
+@media (max-width: 768px) {
+  .home-page {
+    padding: 20px 16px;
+  }
+
+  .boards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  .board-bar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 8px;
+  }
+
+  .card-detail-body {
+    flex-direction: column;
+  }
+
+  .card-detail-sidebar {
+    width: 100%;
+  }
+
+  .header-search input {
+    width: 140px;
+  }
+
+  .header-search input:focus {
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .board-tile {
+    height: 80px;
+  }
+
+  .list-wrapper {
+    width: 260px;
+  }
+
+  .card-detail-modal {
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  .card-detail-overlay {
+    padding: 0;
+  }
+}

@@ -1,0 +1,183 @@
+# TaskFlow - Trello Clone
+
+A full-stack Kanban-style project management application built with **FastAPI** + **React**, replicating Trello's core features and design patterns.
+
+## 🏗️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | React 19, Vite, @hello-pangea/dnd, React Router, Axios |
+| **Backend** | Python 3.11+, FastAPI, asyncpg |
+| **Database** | PostgreSQL |
+| **Package Mgmt** | uv (backend), npm (frontend) |
+| **Testing** | pytest + pytest-asyncio (backend), Vitest + Testing Library (frontend) |
+
+## 📁 Project Structure
+
+```
+trello-clone/
+├── docker-compose.yml          # PostgreSQL container
+├── backend/
+│   ├── pyproject.toml          # uv + Python deps
+│   ├── app/
+│   │   ├── main.py             # FastAPI app entry
+│   │   ├── database.py         # asyncpg pool management
+│   │   ├── models.py           # Pydantic request models
+│   │   └── routes/
+│   │       ├── boards.py       # Board CRUD
+│   │       ├── lists.py        # List CRUD + reorder
+│   │       ├── cards.py        # Card CRUD + reorder + move
+│   │       ├── checklists.py   # Checklist/item CRUD
+│   │       ├── misc.py         # Labels, users, comments, members
+│   │       └── search.py       # Advanced search/filter
+│   ├── db/
+│   │   ├── schema.sql          # Full database schema
+│   │   └── seed.sql            # Sample data
+│   └── tests/                  # 75 pytest tests
+│       ├── conftest.py
+│       ├── test_boards.py
+│       ├── test_lists.py
+│       ├── test_cards.py
+│       ├── test_checklists.py
+│       └── test_misc.py
+└── frontend/
+    ├── vite.config.js          # Vite + API proxy
+    ├── src/
+    │   ├── App.jsx             # Router setup
+    │   ├── index.css           # Complete Trello-like CSS
+    │   ├── api/api.js          # API service layer
+    │   ├── pages/
+    │   │   ├── HomePage.jsx    # Board grid + create modal
+    │   │   └── BoardPage.jsx   # Kanban board with DnD
+    │   ├── components/
+    │   │   ├── Header/
+    │   │   ├── BoardView/
+    │   │   │   └── CardItem.jsx
+    │   │   └── CardDetail/
+    │   │       └── CardDetailModal.jsx
+    │   └── __tests__/          # 19 Vitest tests
+    └── package.json
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Docker & Docker Compose
+- Python 3.11+ & [uv](https://docs.astral.sh/uv/)
+- Node.js 18+
+
+### 1. Start Database
+```bash
+docker compose up -d
+```
+
+### 2. Start Backend
+```bash
+cd backend
+uv sync --all-extras
+uv run uvicorn app.main:app --reload
+# API available at http://localhost:8000
+```
+
+### 3. Start Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+# App available at http://localhost:5173
+```
+
+## ✅ Features
+
+### Board Management
+- Create boards with custom background colors
+- Rename boards inline
+- Delete boards with confirmation
+
+### List Management
+- Create, rename, delete lists
+- Drag & drop to reorder lists
+
+### Card Management
+- Create, edit, delete cards
+- Full drag & drop between lists (cross-list move)
+- Card covers with color selection
+- Due dates with overdue/today highlighting
+- Archive cards
+
+### Labels
+- Color-coded labels per board
+- Toggle labels on/off per card
+- Expandable label display on cards
+
+### Checklists
+- Create multiple checklists per card
+- Add/toggle/delete checklist items
+- Visual progress bar with percentage
+
+### Members
+- Assign/unassign members to cards
+- Avatar display on cards
+
+### Comments
+- Add/delete comments on cards
+- User avatar and timestamp display
+
+### Search & Filter
+- Full-text search across cards
+- Filter by label, member, due date
+- Real-time search results dropdown
+
+## 🧪 Running Tests
+
+### Backend (75 tests)
+```bash
+cd backend
+uv run pytest -v
+```
+
+### Frontend (19 tests)
+```bash
+cd frontend
+npx vitest run
+```
+
+## 📐 Database Schema
+
+The schema includes 9 tables with proper relationships:
+- `users`, `boards`, `lists`, `cards`
+- `labels`, `card_labels` (junction)
+- `card_members` (junction)
+- `checklists`, `checklist_items`
+- `comments`, `activity_log`
+
+All foreign keys use `ON DELETE CASCADE` for data integrity.
+
+## 🔌 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/boards` | List all boards |
+| POST | `/api/boards` | Create board |
+| GET | `/api/boards/{id}` | Get board with lists & cards |
+| PUT | `/api/boards/{id}` | Update board |
+| DELETE | `/api/boards/{id}` | Delete board |
+| GET | `/api/boards/{id}/lists` | Get lists for board |
+| POST | `/api/boards/{id}/lists` | Create list |
+| PUT | `/api/lists/reorder` | Reorder lists |
+| PUT | `/api/lists/{id}` | Update list |
+| DELETE | `/api/lists/{id}` | Delete list |
+| GET | `/api/lists/{id}/cards` | Get cards for list |
+| POST | `/api/lists/{id}/cards` | Create card |
+| PUT | `/api/cards/reorder` | Reorder cards |
+| PUT | `/api/cards/move` | Move card between lists |
+| GET | `/api/cards/{id}` | Get card details |
+| PUT | `/api/cards/{id}` | Update card |
+| DELETE | `/api/cards/{id}` | Delete card |
+| POST/DELETE | `/api/cards/{id}/labels/{lid}` | Toggle label |
+| POST/DELETE | `/api/cards/{id}/members/{uid}` | Toggle member |
+| GET/POST | `/api/cards/{id}/checklists` | Checklists |
+| POST | `/api/checklists/{id}/items` | Add item |
+| PUT/DELETE | `/api/checklist-items/{id}` | Update/delete item |
+| GET/POST | `/api/cards/{id}/comments` | Comments |
+| GET | `/api/search` | Search cards |
